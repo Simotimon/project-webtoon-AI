@@ -1,7 +1,7 @@
 """[1] Novel text -> panel list (JSON).
 
-Feed in raw novel / story text. A local LLM (any OpenAI-compatible server:
-Ollama, LM Studio, llama.cpp, vLLM ...) adapts it into webtoon panels:
+Feed in raw novel / story text. A local LLM running on your own PC
+(Ollama, LM Studio, llama.cpp ... any OpenAI-compatible local server) adapts it into webtoon panels:
 shot type, characters, action, emotion, narration, dialogue.
 
 The image prompt for each panel is built in code from those fields plus the

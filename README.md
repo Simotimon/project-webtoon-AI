@@ -2,6 +2,8 @@
 
 A local AI pipeline that turns **novel text** into a vertical-scroll webtoon episode — panels, consistent characters, speech bubbles, and a final stitched strip — running on a single consumer GPU (RTX 5080, 16 GB VRAM).
 
+**Local only:** no cloud servers, no paid APIs. Internet is used only once to download model weights; after that everything runs offline on your PC.
+
 > Status: **early development** — stage [1] done. See [PATCH_NOTES.md](PATCH_NOTES.md).
 
 ## How it works
@@ -43,7 +45,7 @@ outputs/episode_01.png
 
 | Stage | Model | Why |
 |---|---|---|
-| Story → Panels | **Qwen3** (local, 8B–14B, quantized) — or an API LLM | Outputs structured JSON per panel; handles Korean scripts well |
+| Story → Panels | **Qwen3** (local, 8B–14B, quantized, via Ollama/LM Studio) | Outputs structured JSON per panel; handles Korean scripts well |
 | Character sheets | **FLUX.1-dev** (+ optional character LoRA) | Strong base illustration quality; already familiar setup |
 | Panel generation (main) | **Qwen-Image-Edit** (latest multi-image version, FP8/GGUF) | Takes multiple reference images → keeps the same character across panels. Fits 16 GB with quantization |
 | Panel generation (alt) | **FLUX.1 Kontext [dev]** | Single-reference editing; fallback / A/B comparison |

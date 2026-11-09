@@ -2,6 +2,11 @@
 
 All changes are logged here, newest first.
 
+## v0.1.1 — 2026-11-09
+### Changed
+- README: project is now explicitly **local only** (no cloud servers / paid APIs); removed the API LLM option
+- `localhost` LLM endpoint documented as the user's own machine (Ollama / LM Studio)
+
 ## v0.1.0 — 2026-11-09
 ### Added
 - `src/webtoon_ai/story.py` — stage [1] Novel → Panels
