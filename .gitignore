@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+models/
+*.safetensors
+*.ckpt
+*.gguf
+outputs/*
+!outputs/.gitkeep

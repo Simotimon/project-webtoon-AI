@@ -1,0 +1,3 @@
+"""project-webtoon-AI: script → vertical webtoon pipeline."""
+
+__version__ = "0.0.1"
