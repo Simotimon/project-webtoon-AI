@@ -1,17 +1,28 @@
 # project-webtoon-AI
 
-A local AI pipeline that turns a story script into a vertical-scroll webtoon episode — panels, consistent characters, speech bubbles, and a final stitched strip — running on a single consumer GPU (RTX 5080, 16 GB VRAM).
+A local AI pipeline that turns **novel text** into a vertical-scroll webtoon episode — panels, consistent characters, speech bubbles, and a final stitched strip — running on a single consumer GPU (RTX 5080, 16 GB VRAM).
 
-> Status: **planning / scaffolding**. See [PATCH_NOTES.md](PATCH_NOTES.md).
+> Status: **early development** — stage [1] done. See [PATCH_NOTES.md](PATCH_NOTES.md).
+
+## How it works
+
+You paste in a novel chapter. You do **not** write image prompts.
+
+1. An LLM reads the novel, finds the characters, and adapts the text into panels (shot type, action, emotion, narration, dialogue).
+2. Image prompts are built automatically from each panel + a fixed character appearance sheet, so a character is described the same way in every panel.
+3. You can review/edit the panel JSON before rendering.
+4. **Manual prompt mode:** set `prompt_override` on any panel to use your own prompt for just that panel.
 
 ## Pipeline
 
 ```
-script.txt
+novel.txt
    │
    ▼
-[1] Story → Panels      LLM splits the script into panels
-   │                    (shot type, characters, pose, dialogue)
+[1] Novel → Panels      LLM adapts the text into panels       ✅ story.py
+   │                    (shot, characters, action, narration, dialogue)
+   │                    + characters/characters.json (appearance sheet)
+   │                    → review / edit panels.json here
    ▼
 [2] Character Sheets    one reference sheet per character
    │
@@ -59,6 +70,43 @@ project-webtoon-AI/
 ├── requirements.txt
 └── PATCH_NOTES.md
 ```
+
+## Usage
+
+### [1] Novel → panels
+
+Run a local LLM with an OpenAI-compatible API (e.g. Ollama: `ollama pull qwen3:14b`), then:
+
+```bash
+set PYTHONPATH=src
+python -m webtoon_ai.story novel.txt -o outputs/ep01/panels.json
+```
+
+- `characters/characters.json` is created on the first run. Fix the appearances there — they are reused for every episode.
+- Edited panel fields in `panels.json`? Rebuild prompts:
+  `python -m webtoon_ai.story outputs/ep01/panels.json --rebuild`
+- Options: `--model`, `--base-url` (LM Studio: `http://localhost:1234/v1`), `--style`.
+
+Panel format:
+
+```json
+{
+  "id": 3,
+  "shot": "close-up",
+  "characters": ["minsu"],
+  "scene": "rainy school rooftop at dusk",
+  "action": "turns around quickly",
+  "emotion": "shocked",
+  "narration": "",
+  "dialogue": [{"speaker": "minsu", "text": "뭐라고?"}],
+  "prompt": "(auto-built)",
+  "prompt_override": null
+}
+```
+
+## Patch notes
+
+Every change is logged in [PATCH_NOTES.md](PATCH_NOTES.md).
 
 ## Requirements (target)
 
